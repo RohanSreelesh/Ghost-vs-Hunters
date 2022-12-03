@@ -8,11 +8,11 @@ int main(int argc, char *argv[])
     // You may change this code; this is for demonstration purposes
      BuildingType building;
      initBuilding(&building);
-    // populateRooms(&building);
+     populateRooms(&building);
     // //printRooms(building.rooms);
-    // cleanupBuilding(&building);
 
 
+    /*
     RoomType* van = calloc(1, sizeof(RoomType));
     initRoom(van, "Van");
 
@@ -26,29 +26,39 @@ int main(int argc, char *argv[])
 
     connectRooms(van, master_bedroom);
     printRooms(van->rooms);
+    */
+    // RoomType* van = calloc(1, sizeof(RoomType));
+    // initRoom(van, "Van");
+    // HunterType* hunter = calloc(1,sizeof(HunterType));
+    // HunterType hunter2;
+    // HunterType hunter3;
+    // HunterType hunter4;
+    // initHunter(hunter, van, "hunter 1", EMF, building.evidenceList);
+    // initHunter(&hunter2, van, "hunter 2", EMF, building.evidenceList);
+    // initHunter(&hunter3, van, "hunter 3", EMF, building.evidenceList);
+    // initHunter(&hunter4, van, "hunter 4", EMF, building.evidenceList);
 
-    HunterType hunter;
-    HunterType hunter2;
-    HunterType hunter3;
-    HunterType hunter4;
-    initHunter(&hunter, van, "hunter 1", EMF, building.evidenceList);
-    initHunter(&hunter2, van, "hunter 2", EMF, building.evidenceList);
-    initHunter(&hunter3, van, "hunter 3", EMF, building.evidenceList);
-    initHunter(&hunter4, van, "hunter 4", EMF, building.evidenceList);
+    // GhostType ghost;
+    // initGhost(&ghost, van);
+    //
+    // printf("%d\n",checkHunter(&ghost));
+    // addHunterToBuilding(hunter,&building);
+    //
+    // addHunterToRoom(hunter, van);
+    // addHunterToRoom(&hunter2, van);
+    // addHunterToRoom(&hunter3, van);
+    // addHunterToRoom(&hunter4, van);
 
-    GhostType ghost;
-    initGhost(&ghost, van);
-
-    printf("%d\n",checkHunter(&ghost));
-
-    addHunterToRoom(&hunter, van);
-    addHunterToRoom(&hunter2, van);
-    addHunterToRoom(&hunter3, van);
-    addHunterToRoom(&hunter4, van);
-
-    printHunter(van->hunters);
+    //printHunter(van->hunters);
     //printf("%d\n",checkHunter(&ghost));
+    //generateEvidence(&ghost);
+    //generateEvidence(&ghost);
+    //generateEvidence(&ghost);
+    //generateEvidence(&ghost);
+    //printEvidence(ghost.room->evidenceList);*/
 
+    cleanupBuilding(&building);
+    //free(van);
     return 0;
 }
 

@@ -107,8 +107,73 @@ void populateRooms(BuildingType* building) {
     connectRooms(kitchen, garage);
     connectRooms(garage, utility_room);
 
-    printRooms(hallway->rooms);
-    printf("%d\n",hallway->numConnections );
+    //testing
+
+    HunterType* hunter = calloc(1,sizeof(HunterType));
+    initHunter(hunter, van, "hunter 1", EMF, building->evidenceList);
+
+    HunterType* hunter2 = calloc(1,sizeof(HunterType));
+    initHunter(hunter2, van, "hunter 2", TEMPERATURE, building->evidenceList);
+
+    addHunterToBuilding(hunter,building);
+
+    addHunterToRoom(hunter, van);
+
+    addHunterToBuilding(hunter2,building);
+
+    addHunterToRoom(hunter2, van);
+
+    GhostType ghost;
+    initGhost(&ghost, van);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    generateEvidence(&ghost);
+    printEvidence(ghost.room->evidenceList);
+
+    //printEvidence(hunter->evidenceList);
+    collectEvidenceFromRoom(hunter);
+    collectEvidenceFromRoom(hunter);
+    collectEvidenceFromRoom(hunter);
+    collectEvidenceFromRoom(hunter);
+    collectEvidenceFromRoom(hunter);
+    collectEvidenceFromRoom(hunter);
+    //printEvidence(hunter->evidenceList);
+
+    collectEvidenceFromRoom(hunter2);
+
+    shareEvidenceBwHunters(hunter,hunter2);
+
+
+    printf("%s\n","building evidence" );
+    printEvidence(building->evidenceList);
+    printf("%s\n","hunter evidence" );
+    printEvidence(hunter->evidenceList);
+    printf("%s\n","hunter2 evidence" );
+    printEvidence(hunter2->evidenceList);
+    printf("%s\n","room evidence" );
+    printEvidence(hunter->room->evidenceList);
+
+    printf("\n");
+    printf("\n");
+    moveHunter(hunter);
+    moveHunter(hunter);
+    moveHunter(hunter);
+    moveHunter(hunter);
+
+
+
+    // EvidenceType* evidence = calloc(1,sizeof(EvidenceType));
+    // evidence->evidenceType =0;
+    // evidence->value=1.1;
+    // EvidenceNode* node = calloc(1,sizeof(EvidenceNode));
+    // node->data=evidence;
+    // addEvidenceToHunter(hunter,node);
+    // printEvidence(hunter->evidenceList);
 }
 
 
@@ -140,7 +205,7 @@ void initBuilding(BuildingType* building){
   initRoomList(roomsList);
   initHunterList(huntersList);
   initEvidenceList(evidences);
-  
+
   building->rooms = roomsList;
   building->hunters = huntersList;
   building->evidenceList = evidences;
@@ -149,8 +214,69 @@ void initBuilding(BuildingType* building){
 void cleanupBuilding(BuildingType* building){
   cleanupRoomData(building->rooms);
   cleanupRoomNodes(building->rooms);
+
+  cleanupEvidenceData(building->evidenceList);
+  cleanupEvidenceNodes(building->evidenceList);
   //cleanup hunters
+  cleanupHunterData(building->hunters);
+  cleanupHunterNodes(building->hunters);
+  //cleanupEvidence
+
 
   free(building->rooms);
   free(building->hunters);
+  free(building->evidenceList);
+}
+
+void addHunterToBuilding(HunterType* hunter, BuildingType* building){
+  //citation: taken from my tutorial 6 code and modified
+  HunterNode* cur =NULL;
+  HunterNode* prev =NULL;
+  HunterListType* list = building->hunters;
+  HunterNode* new = calloc(1,sizeof(HunterNode));
+  new->data = hunter;
+
+  cur = list->head;
+
+  if(cur==NULL){
+    list->head = new;
+    list->head->next = cur;
+    return;}
+
+  else{
+
+  while(cur!=NULL){
+
+    prev = cur;
+    cur = cur->next;
+  }
+  prev->next = new;
+  new->next = cur;
+  }
+}
+
+void addEvidenceToBuilding(HunterType* hunter, EvidenceNode* evidence){
+  EvidenceNode* cur;
+  EvidenceNode* prev;
+  EvidenceListType* list = hunter->buildingEvidenceList;
+  EvidenceNode* new;
+  new = evidence;
+
+  cur = list->head;
+
+  if(cur==NULL){
+    list->head = new;
+    list->head->next = cur;
+    return;}
+
+  else{
+
+  while(cur!=NULL){
+
+    prev = cur;
+    cur = cur->next;
+  }
+  prev->next = new;
+  new->next = cur;
+}
 }

@@ -53,9 +53,10 @@ typedef struct {
   struct EvidenceNode *next;
 } EvidenceNode;
 
-typedef struct {
+typedef struct EvidenceListType{
   EvidenceNode* head;
 } EvidenceListType;
+
 
 //ghost
 typedef struct {
@@ -91,7 +92,7 @@ typedef struct {
   GhostType ghost;	//statically allocated
   HunterListType* hunters;
   RoomListType* rooms;
-  EvidenceListType* evidenceList;
+  EvidenceListType* evidenceList;   //deprecated will be removed
 }BuildingType;
 
 
@@ -107,6 +108,7 @@ void connectRooms(RoomType*, RoomType*);
 void printRooms(RoomListType *);
 void cleanupRoomData(RoomListType *);
 void cleanupRoomNodes(RoomListType *);
+void removeHunterFromRoom(HunterType* , RoomType*);
 
 void appendRoom(RoomListType* , RoomNode* );
 
@@ -115,16 +117,31 @@ void initHunter(HunterType*, RoomType* , char* , EvidenceClassType ,EvidenceList
 void initHunterList(HunterListType* );
 void addHunterToRoom(HunterType*, RoomType*);
 void printHunter(HunterListType *);
+void cleanupHunterData(HunterListType *);
+void cleanupHunterNodes(HunterListType *);
+void cleanupHunterData(HunterListType *);
+void collectEvidenceFromRoom(HunterType*);
+void addEvidenceToHunter(HunterType* , EvidenceNode*);
+void shareEvidenceBwHunters(HunterType*, HunterType*);
+void convertEvidenceEnumToString(EvidenceClassType);
+void moveHunter(HunterType* );
 
 //building functions
 void initBuilding(BuildingType* );
 void cleanupBuilding(BuildingType*);
+void addHunterToBuilding(HunterType*, BuildingType*);
+void addEvidenceToBuilding(HunterType*, EvidenceNode*);
 
 //evidence functions
 void initEvidenceList(EvidenceListType*);
-
+void printEvidence(EvidenceListType *);
+void leaveEvidenceInCurRoom(GhostType*, EvidenceType*);
+void generateEvidence(GhostType*);
+void cleanupEvidenceNodes(EvidenceListType*);
+void cleanupEvidenceData(EvidenceListType*);
 
 //ghost funtions
 void initGhost(GhostType*, RoomType*);
 int checkHunter(GhostType*);
 void updateGhostBoredom(GhostType*,int);
+int checkIfGhostly(EvidenceNode*);

@@ -41,7 +41,7 @@ int checkEndHaunt(GhostType* ghost){
 
 void generateEvidence(GhostType* ghost){
   //3 types of evidence for 4 typ of Ghosts
-  int randChoice = randInt(0,3)
+  int randChoice = randInt(0,3);
   int ghostEnum =  ghost->ghostType;
   EvidenceClassType evidenceType;
   float value;
@@ -55,7 +55,7 @@ void generateEvidence(GhostType* ghost){
        evidenceType = TEMPERATURE;
        value = randFloat(-10.0,1.0);
     }
-    else if(randChoice==2){
+    else if(randChoice==2){ 
        evidenceType = FINGERPRINTS;
        value = 1.0;
     }
@@ -106,8 +106,15 @@ void generateEvidence(GhostType* ghost){
        value =randFloat(65.0,75.0);
     }
   }
+
   //build evicence node and add it to evidence list of the room
-  //
+  EvidenceType* evidence =  calloc(1,sizeof(EvidenceType));
+  evidence->evidenceType = evidenceType;
+  evidence->value = value;
+  //printf("%f\n",value );
+
+  //add it to evidence evidence list of the room
+  leaveEvidenceInCurRoom(ghost,evidence);
 
 
 }
