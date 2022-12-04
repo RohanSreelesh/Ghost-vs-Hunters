@@ -17,6 +17,15 @@ void initRoom(RoomType* room, char* name){
   room->evidenceList = evidenceList;
 
   room->numConnections = 0;
+
+  sem_init(&(room->mutex),0 ,1);
+
+  // printf("hello:%d\n",room->mutex);
+  // sem_wait(&(room->mutex));
+  // printf("hello2:%d\n",room->mutex);
+  // sem_post(&(room->mutex));
+  // printf("hello3:%d\n",room->mutex);
+
 }
 
 void initRoomList(RoomListType* roomList){
@@ -96,8 +105,9 @@ void addHunterToRoom(HunterType* hunter, RoomType*room){
 
 void removeHunterFromRoom(HunterType* hunter, RoomType*room){
     //citation: taken from my tutorial 6 code and modified
-    printf("name of the room: %s\n",room->name);
-    printHunter(room->hunters);
+    // printf("name of the room: %s\n",room->name);
+    // printHunter(room->hunters);
+    printf("\n");
     HunterNode* cur;
     HunterNode* prev;
     HunterListType* list = room->hunters;
@@ -137,11 +147,60 @@ void removeHunterFromRoom(HunterType* hunter, RoomType*room){
 
     }
 
-    printf("hunter: %s  was removed from %s\n",hunter->name,room->name);
-    printf("name of the room(after removal): %s\n",room->name);
-    printHunter(room->hunters);
+    //
+    // printf("hunter: %s  was removed from %s\n",hunter->name,room->name);
+    // printf("name of the room(after removal): %s\n",room->name);
+    // printHunter(room->hunters);
 }
 
+
+void removeHunterFromRoomFinal(HunterType* hunter, RoomType*room){
+    //citation: taken from my tutorial 6 code and modified
+    // printf("name of the room: %s\n",room->name);
+    // printHunter(room->hunters);
+    sem_wait(&(hunter->room->mutex));
+    printf("\n");
+    HunterNode* cur;
+    HunterNode* prev;
+    HunterListType* list = room->hunters;
+    //HunterNode* new = calloc(1,sizeof(HunterNode));
+
+
+     cur = list->head;
+
+     int found= 0;
+     while(cur!=NULL){
+       //if evidence type matches the type the hunter can read
+       if(hunter->name==cur->data->name){
+         found=1;
+         break;
+       }
+       prev = cur;
+       cur = cur->next;
+     }
+     if(found==1){
+
+     }
+    if(found==0){
+      sem_post(&(hunter->room->mutex));
+      return;
+    }
+
+    if(cur==list->head){
+      HunterNode* tofree = list->head;
+      list->head = list->head->next;
+      free(tofree);
+    }
+    else if (prev!=NULL){
+
+      HunterNode* tofree =prev->next;
+
+      prev->next =prev->next->next;
+      free(tofree);
+
+    }
+    sem_post(&(hunter->room->mutex));
+  }
 
 void printHunter(HunterListType *list) {
   //citation: taken from my tutorial 6 code and modified

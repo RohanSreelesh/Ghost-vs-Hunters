@@ -111,59 +111,198 @@ void populateRooms(BuildingType* building) {
 
     HunterType* hunter = calloc(1,sizeof(HunterType));
     initHunter(hunter, van, "hunter 1", EMF, building->evidenceList);
-
+    //
     HunterType* hunter2 = calloc(1,sizeof(HunterType));
     initHunter(hunter2, van, "hunter 2", TEMPERATURE, building->evidenceList);
+    //
+    HunterType* hunter3 = calloc(1,sizeof(HunterType));
+    initHunter(hunter3, van, "hunter 3", FINGERPRINTS, building->evidenceList);
 
+    HunterType* hunter4 = calloc(1,sizeof(HunterType));
+    initHunter(hunter4, van, "hunter 4", SOUND, building->evidenceList);
+    //
     addHunterToBuilding(hunter,building);
-
     addHunterToRoom(hunter, van);
-
+    //
     addHunterToBuilding(hunter2,building);
-
     addHunterToRoom(hunter2, van);
 
+    addHunterToBuilding(hunter3,building);
+    addHunterToRoom(hunter3, van);
+
+    addHunterToBuilding(hunter4,building);
+    addHunterToRoom(hunter4, van);
+
+    //ghost while loop
+    pthread_t t1,t2,t3,t4,t5;
     GhostType ghost;
-    initGhost(&ghost, van);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    generateEvidence(&ghost);
-    printEvidence(ghost.room->evidenceList);
+    initGhost(&ghost, left_storage_room);
 
-    //printEvidence(hunter->evidenceList);
-    collectEvidenceFromRoom(hunter);
-    collectEvidenceFromRoom(hunter);
-    collectEvidenceFromRoom(hunter);
-    collectEvidenceFromRoom(hunter);
-    collectEvidenceFromRoom(hunter);
-    collectEvidenceFromRoom(hunter);
-    //printEvidence(hunter->evidenceList);
+    pthread_create(&t1, NULL, mainGhostFunction, &ghost);
 
-    collectEvidenceFromRoom(hunter2);
+     pthread_create(&t2, NULL, mainHunterFunction, hunter);
+     pthread_create(&t3, NULL, mainHunterFunction, hunter2);
+    pthread_create(&t4, NULL, mainHunterFunction, hunter3);
+    pthread_create(&t5, NULL, mainHunterFunction, hunter4);
 
-    shareEvidenceBwHunters(hunter,hunter2);
+    pthread_join(t1, NULL);
+     pthread_join(t2, NULL);
+    pthread_join(t3, NULL);
+    pthread_join(t4, NULL);
+    pthread_join(t5, NULL);
+
+    printf("%s fear: %d\n",hunter->name,hunter->fearValue);
+    printf("%s fear: %d\n",hunter2->name,hunter2->fearValue);
+    printf("%s fear: %d\n",hunter3->name,hunter3->fearValue);
+    printf("%s fear: %d\n",hunter4->name,hunter4->fearValue);
+
+    int lost =1;
+    if(hunter->fearValue<100){
+      if(guessGhost(hunter)==-1){
+        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost \n",hunter->name);
+      }
+      else{
+        printf("Guess ghost by %s: %d\n",hunter->name,guessGhost(hunter));
+        printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+
+        lost=0;
+      }
+
+    }
+    if(hunter2->fearValue<100){
+      if(guessGhost(hunter2)==-1){
+        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost\n",hunter2->name);
+      }
+      else{
+      printf("Guess ghost by %s: %d\n",hunter2->name,guessGhost(hunter2));
+      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      lost=0;
+    }}
+    if(hunter3->fearValue<100){
+      if(guessGhost(hunter3)==-1){
+        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost\n",hunter3->name);
+      }
+      else{
 
 
-    printf("%s\n","building evidence" );
-    printEvidence(building->evidenceList);
-    printf("%s\n","hunter evidence" );
-    printEvidence(hunter->evidenceList);
-    printf("%s\n","hunter2 evidence" );
-    printEvidence(hunter2->evidenceList);
-    printf("%s\n","room evidence" );
-    printEvidence(hunter->room->evidenceList);
+      printf("Guess ghost by %s: %d\n",hunter3->name,guessGhost(hunter3));
+      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      lost=0;
+    }
+    }
+    if(hunter4->fearValue<100){
+      if(guessGhost(hunter4)==-1){
+        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost \n",hunter4->name);
+      }
+      else{
 
-    printf("\n");
-    printf("\n");
-    moveHunter(hunter);
-    moveHunter(hunter);
-    moveHunter(hunter);
-    moveHunter(hunter);
+
+      printf("Guess ghost by %s: %d\n",hunter4->name,guessGhost(hunter4));
+      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      lost=0;
+      }
+    }
+    if(lost){
+      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      printf("%s\n","HUNTERS LOST :(" );
+    }else{
+      printf("%s\n","HUNTERS WON WOOOOO!!!" );
+    }
+
+
+
+
+
+
+    // GhostType ghost;
+    // initGhost(&ghost, van);
+
+
+
+
+
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // generateEvidence(&ghost);
+    // printEvidence(ghost.room->evidenceList);
+    //
+    // moveGhost(&ghost);
+    // moveGhost(&ghost);
+    // moveGhost(&ghost);
+    // moveGhost(&ghost);
+    //
+    // //printEvidence(hunter->evidenceList);
+    // collectEvidenceFromRoom(hunter);
+    // collectEvidenceFromRoom(hunter);
+    // collectEvidenceFromRoom(hunter);
+    // collectEvidenceFromRoom(hunter);
+    // collectEvidenceFromRoom(hunter);
+    // collectEvidenceFromRoom(hunter);
+    // // //printEvidence(hunter->evidenceList);
+    // //
+    // collectEvidenceFromRoom(hunter2);
+    // collectEvidenceFromRoom(hunter2);
+    // collectEvidenceFromRoom(hunter2);
+    // collectEvidenceFromRoom(hunter2);
+    // collectEvidenceFromRoom(hunter2);
+    // collectEvidenceFromRoom(hunter2);
+    // collectEvidenceFromRoom(hunter2);
+
+    //int i=0;
+
+
+    //
+    // collectEvidenceFromRoom(hunter3);
+    // collectEvidenceFromRoom(hunter3);
+    // collectEvidenceFromRoom(hunter3);
+    // collectEvidenceFromRoom(hunter3);
+    // collectEvidenceFromRoom(hunter3);
+    // collectEvidenceFromRoom(hunter3);
+    // collectEvidenceFromRoom(hunter3);
+    //
+    // collectEvidenceFromRoom(hunter4);
+    // collectEvidenceFromRoom(hunter4);
+    // collectEvidenceFromRoom(hunter4);
+    // collectEvidenceFromRoom(hunter4);
+    // collectEvidenceFromRoom(hunter4);
+    // collectEvidenceFromRoom(hunter4);
+    // collectEvidenceFromRoom(hunter4);
+    //
+    // shareEvidenceBwHunters(hunter,hunter2);
+    // shareEvidenceBwHunters(hunter3,hunter2);
+    // shareEvidenceBwHunters(hunter4,hunter2);
+    //
+    // printf("\nresult of check 3 evidence: %d\n", checkThreeGhostlyEvidence(hunter2));
+    //
+    // //
+    // // printf("%s\n","building evidence" );
+    // // printEvidence(building->evidenceList);
+    // // printf("%s\n","hunter evidence" );
+    // // printEvidence(hunter->evidenceList);
+    // // printf("%s\n","hunter2 evidence" );
+    // // printEvidence(hunter2->evidenceList);
+    // // printf("%s\n","room evidence" );
+    // // printEvidence(hunter->room->evidenceList);
+    //
+    // printf("\n");
+    // printf("\n");
+    // moveHunter(hunter);
+    // moveHunter(hunter);
+    // moveHunter(hunter);
+    // moveHunter(hunter);
 
 
 

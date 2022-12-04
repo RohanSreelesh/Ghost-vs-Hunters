@@ -7,6 +7,8 @@ void initEvidenceList(EvidenceListType* evidenceList){
 
 void leaveEvidenceInCurRoom(GhostType* ghost, EvidenceType* evidence){
   //citation: taken from my tutorial 6 code and modified
+  sem_wait(&(ghost->room->mutex));
+  int type = evidence->evidenceType;
   EvidenceNode* cur;
   EvidenceNode* prev;
   EvidenceListType* list = ghost->room->evidenceList;
@@ -18,6 +20,10 @@ void leaveEvidenceInCurRoom(GhostType* ghost, EvidenceType* evidence){
   if(cur==NULL){
     list->head = new;
     list->head->next = cur;
+    printf("Ghost left evidence in %s with type: ", ghost->room->name);
+    convertEvidenceEnumToString(type);
+    printf("\n");
+    sem_post(&(ghost->room->mutex));
     return;}
 
   else{
@@ -30,6 +36,10 @@ void leaveEvidenceInCurRoom(GhostType* ghost, EvidenceType* evidence){
   prev->next = new;
   new->next = cur;
   }
+  printf("Ghost left evidence in %s with type: ", ghost->room->name);
+  convertEvidenceEnumToString(type);
+  printf("\n");
+  sem_post(&(ghost->room->mutex));
 }
 
 
@@ -38,13 +48,13 @@ int checkIfGhostly(EvidenceNode* evidence){
   float value =evidence->data->value;
 
   if(evidenceEnum==0){
-    if(value>=4.70 && value<=5.00){
+    if(value>=4.90 && value<=5.00){
       return 1;
     }
   }
 
   else if(evidenceEnum==1){
-    if(value>=-10.0 && value<=1.0){
+    if(value>=-10.0 && value<=0.0){
       return 1;
     }
   }
@@ -54,10 +64,11 @@ int checkIfGhostly(EvidenceNode* evidence){
   }
   }
   else if(evidenceEnum==3){
-    if(value>=65.00 && value<=75.00){
+    if(value>=70.00 && value<=75.00){
       return 1;
   }
   }
+  return 0;
 
 }
 

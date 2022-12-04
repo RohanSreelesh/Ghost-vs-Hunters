@@ -29,6 +29,7 @@ typedef struct {
    struct HunterListType* hunters;
    struct GhostType* ghost;
    int numConnections;
+   sem_t mutex;
 } RoomType;
 
 
@@ -59,7 +60,7 @@ typedef struct EvidenceListType{
 
 
 //ghost
-typedef struct {
+typedef struct GhostType{
   GhostClassType ghostType;
   RoomType *room;
   int boredomValue;
@@ -75,6 +76,7 @@ typedef struct {
   EvidenceListType* evidenceList;
   EvidenceListType* buildingEvidenceList;
   EvidenceClassType evidenceType;
+  sem_t mutex;
 
 } HunterType;
 
@@ -125,6 +127,15 @@ void addEvidenceToHunter(HunterType* , EvidenceNode*);
 void shareEvidenceBwHunters(HunterType*, HunterType*);
 void convertEvidenceEnumToString(EvidenceClassType);
 void moveHunter(HunterType* );
+int checkGhost(HunterType*);
+void increaseHunterFear(HunterType*);
+void decreaseHunterBoredom(HunterType*);
+int checkThreeGhostlyEvidence(HunterType*);
+HunterType* checkIfAnotherHunterInRoom(HunterType*);
+void* mainHunterFunction(void* );
+void genrateStandardEvidence(HunterType*);
+void removeHunterFromRoomFinal(HunterType*,RoomType*);
+int guessGhost(HunterType*);
 
 //building functions
 void initBuilding(BuildingType* );
@@ -145,3 +156,6 @@ void initGhost(GhostType*, RoomType*);
 int checkHunter(GhostType*);
 void updateGhostBoredom(GhostType*,int);
 int checkIfGhostly(EvidenceNode*);
+void moveGhost(GhostType*);
+int checkEndHaunt(GhostType*);
+void* mainGhostFunction(void *);
