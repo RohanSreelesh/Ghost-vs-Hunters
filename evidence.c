@@ -1,9 +1,24 @@
 #include "defs.h"
 
+
+/*
+  Function:  initEvidenceList
+  Purpose:   Initalize evidence list
+       in:   Takes an pointer of the type EvidenceListType*
+   return:   nothing
+*/
+
 void initEvidenceList(EvidenceListType* evidenceList){
   evidenceList->head =NULL;
 }
-//add evidence
+
+/*
+  Function:  leaveEvidenceInCurRoom
+  Purpose:   Leave evidence in a room
+       in:   Takes a pointer of the ghost
+       in:   Takes an pointer of the type EvidenceType*
+   return:   nothing
+*/
 
 void leaveEvidenceInCurRoom(GhostType* ghost, EvidenceType* evidence){
   //citation: taken from my tutorial 6 code and modified
@@ -42,7 +57,12 @@ void leaveEvidenceInCurRoom(GhostType* ghost, EvidenceType* evidence){
   sem_post(&(ghost->room->mutex));
 }
 
-
+/*
+  Function:  checkIfGhostly
+  Purpose:   checks if given evidence node is ghostly or not
+       in:   Takes a pointer of the evidenceNode*
+   return:   nothing
+*/
 int checkIfGhostly(EvidenceNode* evidence){
   int evidenceEnum = evidence->data->evidenceType;
   float value =evidence->data->value;
@@ -72,24 +92,39 @@ int checkIfGhostly(EvidenceNode* evidence){
 
 }
 
+/*
+  Function:  convertEvidenceEnumToString
+  Purpose:   prints out the evidence type given the enum
+       in:   Takes a input of EvidenceClassType
+   return:   nothing
+*/
 
-void printEvidence(EvidenceListType *list) {
-  //citation: taken from my tutorial 6 code and modified
-  EvidenceNode* cur;
-  cur = list->head;
-  while(cur!=NULL){
-    printf("%f\n", cur->data->value);
-    cur = cur->next;
+void convertEvidenceEnumToString(EvidenceClassType evidenceType){
+  if(evidenceType==0){
+    printf(" %s ","EMF" );
+  }
+  else if(evidenceType==1){
+    printf(" %s ","TEMPERATURE");
+  }
+  else if(evidenceType==2){
+    printf(" %s ","FINGERPRINTS");
+  }
+  else if(evidenceType==3){
+    printf(" %s ","SOUND");
   }
 }
-
+/*
+  Function:  cleanupEvidenceNodes
+  Purpose:   Cleanup evidence nodes given an EvidenceListType* pointer
+       in:   Takes a pointer of EvidenceListType*
+   return:   nothing
+*/
 
 void cleanupEvidenceNodes(EvidenceListType* list){
+  //code taken from my t6 or t7 submission
   EvidenceNode* cur = list->head;
   EvidenceNode* next=NULL;
-  //free only data
   while(cur!=NULL){
-    //cleanupHunterData(cur->data->hunters);
     next = cur->next;
     free(cur);
     cur = next;
@@ -97,23 +132,21 @@ void cleanupEvidenceNodes(EvidenceListType* list){
 }
 }
 
+/*
+  Function:  cleanupEvidenceData
+  Purpose:   Cleanup evidence data given an EvidenceListType* pointer
+       in:   Takes a pointer of EvidenceListType*
+   return:   nothing
+*/
 void cleanupEvidenceData(EvidenceListType* list){
+  //code taken from my t6 or t7 submission
   EvidenceNode* cur = list->head;
   EvidenceNode* next=NULL;
   //free only data
   while(cur!=NULL){
-    //cleanupHunterData(cur->data->hunters);
     next = cur->next;
     free(cur->data);
     cur = next;
 
 }
 }
-
-// EvidenceNode* curEvidenceOfEvidences = cur->data->evidenceList->head;
-// while(curEvidenceOfEvidences!=NULL){ //frees the evidence inside each hunter
-//   nextEvidence = curEvidenceOfEvidences->next;
-//   free(curEvidenceOfEvidences);
-//   curEvidenceOfEvidences =nextEvidence;
-// }
-//delete evidence

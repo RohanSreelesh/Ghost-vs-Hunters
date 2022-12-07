@@ -2,24 +2,12 @@
 #include "defs.h"
 
 /*
-    Note: While this function is provided, you will likely want
-    to modify it to suit your solution. This has been provided
-    to give you a starting point to lay out the room connectivity,
-    but it is entirely possible that you will want to use different
-    data structures to represent the rooms and their connectivity,
-    or different function names.
-
-    Not following this function's structure exactly will not result
-    in a deduction of points.
-
-    The map that this is recreating is visible in the assignment
-    specification, and also available by the original creator here:
-    https://steamcommunity.com/sharedfiles/filedetails/?id=2251267947
-
+  Function:  initializeEverything
+  Purpose:   Intialize BuildingType*  and also creates the threads and everything needed for the program to run
+       in:   Takes an pointer of the type BuildingType
+   return:   nothing
 */
-void populateRooms(BuildingType* building) {
-    // First, create each room. Perhaps you want to include more data
-    // in the init parameters?
+void initializeEverything(BuildingType* building) {
     RoomType* van = calloc(1, sizeof(RoomType));
     initRoom(van, "Van");
     RoomType* hallway = calloc(1, sizeof(RoomType));
@@ -108,18 +96,33 @@ void populateRooms(BuildingType* building) {
     connectRooms(garage, utility_room);
 
     //testing
+    char name1[MAX_STR];
+    char name2[MAX_STR];
+    char name3[MAX_STR];
+    char name4[MAX_STR];
+    printf("%s\n","Enter the name for the 1st hunter:" );
+    scanf("%s", name1);
+
+    printf("%s\n","Enter the name for the 2nd hunter:" );
+    scanf("%s", name2);
+
+    printf("%s\n","Enter the name for the 3rd hunter:" );
+    scanf("%s", name3);
+
+    printf("%s\n","Enter the name for the 4th hunter:" );
+    scanf("%s", name4);
 
     HunterType* hunter = calloc(1,sizeof(HunterType));
-    initHunter(hunter, van, "hunter 1", EMF, building->evidenceList);
+    initHunter(hunter, van, name1, EMF);
     //
     HunterType* hunter2 = calloc(1,sizeof(HunterType));
-    initHunter(hunter2, van, "hunter 2", TEMPERATURE, building->evidenceList);
+    initHunter(hunter2, van, name2, TEMPERATURE);
     //
     HunterType* hunter3 = calloc(1,sizeof(HunterType));
-    initHunter(hunter3, van, "hunter 3", FINGERPRINTS, building->evidenceList);
+    initHunter(hunter3, van, name3, FINGERPRINTS);
 
     HunterType* hunter4 = calloc(1,sizeof(HunterType));
-    initHunter(hunter4, van, "hunter 4", SOUND, building->evidenceList);
+    initHunter(hunter4, van, name4, SOUND);
     //
     addHunterToBuilding(hunter,building);
     addHunterToRoom(hunter, van);
@@ -150,7 +153,10 @@ void populateRooms(BuildingType* building) {
     pthread_join(t3, NULL);
     pthread_join(t4, NULL);
     pthread_join(t5, NULL);
-
+    printf("\n");
+    printf("\n");
+    printf("\n");
+    printf("%s\n","****RESULTS****");
     printf("%s fear: %d\n",hunter->name,hunter->fearValue);
     printf("%s fear: %d\n",hunter2->name,hunter2->fearValue);
     printf("%s fear: %d\n",hunter3->name,hunter3->fearValue);
@@ -159,11 +165,13 @@ void populateRooms(BuildingType* building) {
     int lost =1;
     if(hunter->fearValue<100){
       if(guessGhost(hunter)==-1){
-        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost \n",hunter->name);
+        printf("\n");
+        printf("While the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost \n",hunter->name);
       }
       else{
-        printf("Guess ghost by %s: %d\n",hunter->name,guessGhost(hunter));
-        printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+        printf("\n");
+        printf("Guess ghost by %s: ",hunter->name);
+        convertGhostEnumToString(guessGhost(hunter));
 
         lost=0;
       }
@@ -171,152 +179,64 @@ void populateRooms(BuildingType* building) {
     }
     if(hunter2->fearValue<100){
       if(guessGhost(hunter2)==-1){
-        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost\n",hunter2->name);
+        printf("\n");
+        printf("While the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost\n",hunter2->name);
       }
       else{
-      printf("Guess ghost by %s: %d\n",hunter2->name,guessGhost(hunter2));
-      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+        printf("\n");
+      printf("Guess ghost by %s: ",hunter2->name);
+      convertGhostEnumToString(guessGhost(hunter2));
       lost=0;
     }}
     if(hunter3->fearValue<100){
       if(guessGhost(hunter3)==-1){
-        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost\n",hunter3->name);
+        printf("\n");
+        printf("While the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost\n",hunter3->name);
       }
       else{
 
-
-      printf("Guess ghost by %s: %d\n",hunter3->name,guessGhost(hunter3));
-      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      printf("\n");
+      printf("Guess ghost by %s: ",hunter3->name);
+      convertGhostEnumToString(guessGhost(hunter3));
       lost=0;
     }
     }
     if(hunter4->fearValue<100){
       if(guessGhost(hunter4)==-1){
-        printf("while the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost \n",hunter4->name);
+        printf("\n");
+        printf("While the hunter(%s) was not feared, they could not collect enough evidence to identify the ghost \n",hunter4->name);
       }
       else{
 
-
-      printf("Guess ghost by %s: %d\n",hunter4->name,guessGhost(hunter4));
-      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      printf("\n");
+      printf("Guess ghost by %s: ",hunter4->name);
+      convertGhostEnumToString(guessGhost(hunter4));
       lost=0;
       }
     }
     if(lost){
-      printf("GHOST TYPE WAS:%d\n", ghost.ghostType);
+      printf("\nGHOST TYPE WAS:");
+      convertGhostEnumToString(ghost.ghostType);
+      printf("\n");
       printf("%s\n","HUNTERS LOST :(" );
     }else{
+      printf("\nGHOST TYPE WAS:");
+      convertGhostEnumToString(ghost.ghostType);
+      printf("\n");
       printf("%s\n","HUNTERS WON WOOOOO!!!" );
     }
 
-
-
-
-
-
-    // GhostType ghost;
-    // initGhost(&ghost, van);
-
-
-
-
-
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // generateEvidence(&ghost);
-    // printEvidence(ghost.room->evidenceList);
-    //
-    // moveGhost(&ghost);
-    // moveGhost(&ghost);
-    // moveGhost(&ghost);
-    // moveGhost(&ghost);
-    //
-    // //printEvidence(hunter->evidenceList);
-    // collectEvidenceFromRoom(hunter);
-    // collectEvidenceFromRoom(hunter);
-    // collectEvidenceFromRoom(hunter);
-    // collectEvidenceFromRoom(hunter);
-    // collectEvidenceFromRoom(hunter);
-    // collectEvidenceFromRoom(hunter);
-    // // //printEvidence(hunter->evidenceList);
-    // //
-    // collectEvidenceFromRoom(hunter2);
-    // collectEvidenceFromRoom(hunter2);
-    // collectEvidenceFromRoom(hunter2);
-    // collectEvidenceFromRoom(hunter2);
-    // collectEvidenceFromRoom(hunter2);
-    // collectEvidenceFromRoom(hunter2);
-    // collectEvidenceFromRoom(hunter2);
-
-    //int i=0;
-
-
-    //
-    // collectEvidenceFromRoom(hunter3);
-    // collectEvidenceFromRoom(hunter3);
-    // collectEvidenceFromRoom(hunter3);
-    // collectEvidenceFromRoom(hunter3);
-    // collectEvidenceFromRoom(hunter3);
-    // collectEvidenceFromRoom(hunter3);
-    // collectEvidenceFromRoom(hunter3);
-    //
-    // collectEvidenceFromRoom(hunter4);
-    // collectEvidenceFromRoom(hunter4);
-    // collectEvidenceFromRoom(hunter4);
-    // collectEvidenceFromRoom(hunter4);
-    // collectEvidenceFromRoom(hunter4);
-    // collectEvidenceFromRoom(hunter4);
-    // collectEvidenceFromRoom(hunter4);
-    //
-    // shareEvidenceBwHunters(hunter,hunter2);
-    // shareEvidenceBwHunters(hunter3,hunter2);
-    // shareEvidenceBwHunters(hunter4,hunter2);
-    //
-    // printf("\nresult of check 3 evidence: %d\n", checkThreeGhostlyEvidence(hunter2));
-    //
-    // //
-    // // printf("%s\n","building evidence" );
-    // // printEvidence(building->evidenceList);
-    // // printf("%s\n","hunter evidence" );
-    // // printEvidence(hunter->evidenceList);
-    // // printf("%s\n","hunter2 evidence" );
-    // // printEvidence(hunter2->evidenceList);
-    // // printf("%s\n","room evidence" );
-    // // printEvidence(hunter->room->evidenceList);
-    //
-    // printf("\n");
-    // printf("\n");
-    // moveHunter(hunter);
-    // moveHunter(hunter);
-    // moveHunter(hunter);
-    // moveHunter(hunter);
-
-
-
-    // EvidenceType* evidence = calloc(1,sizeof(EvidenceType));
-    // evidence->evidenceType =0;
-    // evidence->value=1.1;
-    // EvidenceNode* node = calloc(1,sizeof(EvidenceNode));
-    // node->data=evidence;
-    // addEvidenceToHunter(hunter,node);
-    // printEvidence(hunter->evidenceList);
 }
 
-
+/*
+  Function:  appendRoom
+  Purpose:   add a room as an exit
+       in:   Takes an pointer of the type RoomListType*
+       in:   Takes of pointer of the type RoomNode*
+   return:   nothing
+*/
 void appendRoom(RoomListType* allRooms, RoomNode* roomtoAdd){
+  //code taken from assignment 4 submission
   RoomListType* list = allRooms;
   //RoomNode* new = calloc(1, sizeof(RoomNode));
   RoomNode* new;
@@ -334,28 +254,36 @@ void appendRoom(RoomListType* allRooms, RoomNode* roomtoAdd){
   list->tail = list->tail->next;
   }
 }
-
+/*
+  Function:  initBuilding
+  Purpose:   initalizes building
+       in:   Takes an pointer of the type BuildingType*
+   return:   nothing
+*/
 void initBuilding(BuildingType* building){
   HunterListType* huntersList = calloc(1,sizeof(HunterListType));
   RoomListType* roomsList = calloc(1,sizeof(RoomListType));
-  EvidenceListType* evidences = calloc(1,sizeof(EvidenceListType));
 
 
   initRoomList(roomsList);
   initHunterList(huntersList);
-  initEvidenceList(evidences);
 
   building->rooms = roomsList;
   building->hunters = huntersList;
-  building->evidenceList = evidences;
 }
 
+/*
+  Function:  cleanupBuilding
+  Purpose:   Frees all the memory in a building
+       in:   Takes an pointer of the type BuildingType*
+   return:   nothing
+*/
 void cleanupBuilding(BuildingType* building){
   cleanupRoomData(building->rooms);
   cleanupRoomNodes(building->rooms);
 
-  cleanupEvidenceData(building->evidenceList);
-  cleanupEvidenceNodes(building->evidenceList);
+  //cleanupEvidenceData(building->evidenceList);
+  //cleanupEvidenceNodes(building->evidenceList);
   //cleanup hunters
   cleanupHunterData(building->hunters);
   cleanupHunterNodes(building->hunters);
@@ -364,9 +292,16 @@ void cleanupBuilding(BuildingType* building){
 
   free(building->rooms);
   free(building->hunters);
-  free(building->evidenceList);
+  //free(building->evidenceList);
 }
 
+/*
+  Function:  addHunterToBuilding
+  Purpose:   Adds hunter to a given building
+       in:   Takes an pointer of the type HunterType*
+       in:    Takes an pointer of the type BuildingType*
+   return:   nothing
+*/
 void addHunterToBuilding(HunterType* hunter, BuildingType* building){
   //citation: taken from my tutorial 6 code and modified
   HunterNode* cur =NULL;
@@ -392,30 +327,4 @@ void addHunterToBuilding(HunterType* hunter, BuildingType* building){
   prev->next = new;
   new->next = cur;
   }
-}
-
-void addEvidenceToBuilding(HunterType* hunter, EvidenceNode* evidence){
-  EvidenceNode* cur;
-  EvidenceNode* prev;
-  EvidenceListType* list = hunter->buildingEvidenceList;
-  EvidenceNode* new;
-  new = evidence;
-
-  cur = list->head;
-
-  if(cur==NULL){
-    list->head = new;
-    list->head->next = cur;
-    return;}
-
-  else{
-
-  while(cur!=NULL){
-
-    prev = cur;
-    cur = cur->next;
-  }
-  prev->next = new;
-  new->next = cur;
-}
 }

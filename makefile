@@ -20,4 +20,4 @@ room.o:	room.c defs.h
 	gcc -c room.c -g
 
 clean:
-	rm -f building.o evidence.o ghost.o hunter.o main.o room.o
+	rm -f building.o evidence.o ghost.o hunter.o main.o room.o a5

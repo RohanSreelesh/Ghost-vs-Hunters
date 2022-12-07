@@ -1,6 +1,14 @@
 #include "defs.h"
 
 
+
+/*
+  Function:  initRoom
+  Purpose:   Initalize a room
+       in:   Takes a pointer of RoomType*
+       in:    Takes in the name of the room as char* pointer
+   return:   nothing
+*/
 void initRoom(RoomType* room, char* name){
   strcpy(room->name, name);
   //allocate space and assign a pointer to that space for list of rooms
@@ -20,20 +28,27 @@ void initRoom(RoomType* room, char* name){
 
   sem_init(&(room->mutex),0 ,1);
 
-  // printf("hello:%d\n",room->mutex);
-  // sem_wait(&(room->mutex));
-  // printf("hello2:%d\n",room->mutex);
-  // sem_post(&(room->mutex));
-  // printf("hello3:%d\n",room->mutex);
-
 }
 
+/*
+  Function:  initRoomList
+  Purpose:   Initalize room list
+       in:   Takes an pointer of the type RoomListType*
+   return:   nothing
+*/
 void initRoomList(RoomListType* roomList){
   //citation: code taken from MY assignment 4 submission
   roomList->head = NULL;
   roomList->tail = NULL;
 }
 
+/*
+  Function:  connectRooms
+  Purpose:   Connects 2 rooms
+       in:   Takes an pointer of the type RoomType*
+       in:   Takes an pointer of the type RoomType*
+   return:   nothing
+*/
 void connectRooms(RoomType* room, RoomType* roomToConnect){
   //citation: code taken from MY assignment 4 submission addGhost
   RoomListType* list = room->rooms;
@@ -73,6 +88,14 @@ void connectRooms(RoomType* room, RoomType* roomToConnect){
   roomToConnect->numConnections = roomToConnect->numConnections +1;
 }
 
+
+/*
+  Function:  addHunterToRoom
+  Purpose:   Adds a hunter to a given room
+       in:   Takes an pointer of the type HunterType*
+       in:   Takes an pointer of the type RoomType*
+   return:   nothing
+*/
 void addHunterToRoom(HunterType* hunter, RoomType*room){
   //citation: taken from my tutorial 6 code and modified
   HunterNode* cur;
@@ -102,23 +125,24 @@ void addHunterToRoom(HunterType* hunter, RoomType*room){
   printf("%s has moved to %s\n",hunter->name,room->name);
 }
 
-
+/*
+  Function:  removeHunterFromRoom
+  Purpose:   Removes a hunter to a given room
+       in:   Takes an pointer of the type HunterType*
+       in:   Takes an pointer of the type RoomType*
+   return:   nothing
+*/
 void removeHunterFromRoom(HunterType* hunter, RoomType*room){
     //citation: taken from my tutorial 6 code and modified
-    // printf("name of the room: %s\n",room->name);
-    // printHunter(room->hunters);
     printf("\n");
     HunterNode* cur;
     HunterNode* prev;
     HunterListType* list = room->hunters;
-    //HunterNode* new = calloc(1,sizeof(HunterNode));
+    cur = list->head;
+    int found= 0;
 
-
-     cur = list->head;
-
-     int found= 0;
      while(cur!=NULL){
-       //if evidence type matches the type the hunter can read
+       //if evidence type matches the type the hunter can read it
        if(hunter->name==cur->data->name){
          found=1;
          break;
@@ -147,13 +171,15 @@ void removeHunterFromRoom(HunterType* hunter, RoomType*room){
 
     }
 
-    //
-    // printf("hunter: %s  was removed from %s\n",hunter->name,room->name);
-    // printf("name of the room(after removal): %s\n",room->name);
-    // printHunter(room->hunters);
 }
 
-
+/*
+  Function:  removeHunterFromRoom
+  Purpose:   Removes a hunter to a given room and locks the given room, its called to remove a hunter when its done with everything, see mainHunterFunction
+       in:   Takes an pointer of the type HunterType*
+       in:   Takes an pointer of the type RoomType*
+   return:   nothing
+*/
 void removeHunterFromRoomFinal(HunterType* hunter, RoomType*room){
     //citation: taken from my tutorial 6 code and modified
     // printf("name of the room: %s\n",room->name);
@@ -202,27 +228,14 @@ void removeHunterFromRoomFinal(HunterType* hunter, RoomType*room){
     sem_post(&(hunter->room->mutex));
   }
 
-void printHunter(HunterListType *list) {
-  //citation: taken from my tutorial 6 code and modified
-  HunterNode* cur;
-  cur = list->head;
-  while(cur!=NULL){
-    printf("%s\n", cur->data->name);;
-    cur = cur->next;
-  }
-}
 
 
-
-void printRooms(RoomListType *list){
-   RoomNode *currNode = list->head;
-  //printf("|%-10s|%-10s|%-25s|%-25s\n", "ID","Likelihood","Room","Ghost Type");
-  while (currNode != NULL) {
-    printf("%s\n", currNode->data->name);
-    currNode = currNode->next;
-}
-}
-
+  /*
+    Function:  cleanupRoomData
+    Purpose:   Cleanup room node data given an RoomListType* pointer
+         in:   Takes a pointer of RoomListType*
+     return:   nothing
+  */
 void cleanupRoomData(RoomListType *list){
   RoomNode* cur = list->head;
   RoomNode* next=NULL;
@@ -240,7 +253,6 @@ void cleanupRoomData(RoomListType *list){
     RoomNode* curRoomListOfRoom = cur->data->rooms->head;
       while(curRoomListOfRoom!=NULL){ //frees the rooms inside each room
         next = curRoomListOfRoom->next;
-        //free(curRoomListOfRoom->data->evidenceList);
         free(curRoomListOfRoom);
         curRoomListOfRoom =next;
       }
@@ -252,6 +264,13 @@ void cleanupRoomData(RoomListType *list){
 }
 }
 
+
+/*
+  Function:  cleanupRoomNodes
+  Purpose:   Cleanup room nodes given an RoomListType* pointer
+       in:   Takes a pointer of RoomListType*
+   return:   nothing
+*/
 void cleanupRoomNodes(RoomListType *list){
   //citation: code taken from MY assignment 4 submission
   RoomNode* cur = list->head;

@@ -74,7 +74,7 @@ typedef struct {
   int boredomValue;
   int fearValue;
   EvidenceListType* evidenceList;
-  EvidenceListType* buildingEvidenceList;
+  //EvidenceListType* buildingEvidenceList;
   EvidenceClassType evidenceType;
   sem_t mutex;
 
@@ -94,20 +94,19 @@ typedef struct {
   GhostType ghost;	//statically allocated
   HunterListType* hunters;
   RoomListType* rooms;
-  EvidenceListType* evidenceList;   //deprecated will be removed
+  //EvidenceListType* evidenceList;   //deprecated will be removed
 }BuildingType;
 
 
 int randInt(int, int);          // Generates a pseudorandom integer between the parameters
 float randFloat(float, float);  // Generates a pseudorandom float between the parameters
 
-void populateRooms(BuildingType*);   // Populates the building with sample data for rooms
+void initializeEverything(BuildingType*);   // Populates the building with sample data for rooms and starts the threads
 
 //room functions
 void initRoom(RoomType*, char*);
 void initRoomList(RoomListType*);
 void connectRooms(RoomType*, RoomType*);
-void printRooms(RoomListType *);
 void cleanupRoomData(RoomListType *);
 void cleanupRoomNodes(RoomListType *);
 void removeHunterFromRoom(HunterType* , RoomType*);
@@ -115,10 +114,9 @@ void removeHunterFromRoom(HunterType* , RoomType*);
 void appendRoom(RoomListType* , RoomNode* );
 
 //hunter functions
-void initHunter(HunterType*, RoomType* , char* , EvidenceClassType ,EvidenceListType*);
+void initHunter(HunterType*, RoomType* , char* , EvidenceClassType);
 void initHunterList(HunterListType* );
 void addHunterToRoom(HunterType*, RoomType*);
-void printHunter(HunterListType *);
 void cleanupHunterData(HunterListType *);
 void cleanupHunterNodes(HunterListType *);
 void cleanupHunterData(HunterListType *);
@@ -131,7 +129,7 @@ int checkGhost(HunterType*);
 void increaseHunterFear(HunterType*);
 void decreaseHunterBoredom(HunterType*);
 int checkThreeGhostlyEvidence(HunterType*);
-HunterType* checkIfAnotherHunterInRoom(HunterType*);
+void checkIfAnotherHunterInRoom(HunterType*);
 void* mainHunterFunction(void* );
 void genrateStandardEvidence(HunterType*);
 void removeHunterFromRoomFinal(HunterType*,RoomType*);
@@ -145,7 +143,6 @@ void addEvidenceToBuilding(HunterType*, EvidenceNode*);
 
 //evidence functions
 void initEvidenceList(EvidenceListType*);
-void printEvidence(EvidenceListType *);
 void leaveEvidenceInCurRoom(GhostType*, EvidenceType*);
 void generateEvidence(GhostType*);
 void cleanupEvidenceNodes(EvidenceListType*);
@@ -159,3 +156,4 @@ int checkIfGhostly(EvidenceNode*);
 void moveGhost(GhostType*);
 int checkEndHaunt(GhostType*);
 void* mainGhostFunction(void *);
+void convertGhostEnumToString(GhostClassType);

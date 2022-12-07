@@ -1,0 +1,27 @@
+Author: Rohan Sreelesh (101179451)
+Description: This program implements a a simulation of ghosts and hunters
+
+Files:
+	defs.h
+	building.c
+	ghost.c
+	main.c
+	room.c
+	hunter.c
+	evidence.c
+	README.md
+	
+Compilation Instructions:
+make - to compile
+make clean - to clean object files and executable
+
+Launching instructions:
+./a5
+
+Alternatively
+
+./a5 <in.txt >out.txt
+
+
+Operating Instructions:
+Just run it. 

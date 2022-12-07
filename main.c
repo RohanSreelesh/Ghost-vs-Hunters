@@ -5,60 +5,10 @@ int main(int argc, char *argv[])
     // Initialize a random seed for the random number generators
     srand(time(NULL));
 
-    // You may change this code; this is for demonstration purposes
      BuildingType building;
      initBuilding(&building);
-     populateRooms(&building);
-    // //printRooms(building.rooms);
-
-
-    /*
-    RoomType* van = calloc(1, sizeof(RoomType));
-    initRoom(van, "Van");
-
-    RoomType* hallway = calloc(1, sizeof(RoomType));
-    initRoom(hallway, "Hallway");
-
-    connectRooms(van, hallway);
-
-    RoomType* master_bedroom = calloc(1, sizeof(RoomType));
-    initRoom(master_bedroom, "Master Bedroom");
-
-    connectRooms(van, master_bedroom);
-    printRooms(van->rooms);
-    */
-    // RoomType* van = calloc(1, sizeof(RoomType));
-    // initRoom(van, "Van");
-    // HunterType* hunter = calloc(1,sizeof(HunterType));
-    // HunterType hunter2;
-    // HunterType hunter3;
-    // HunterType hunter4;
-    // initHunter(hunter, van, "hunter 1", EMF, building.evidenceList);
-    // initHunter(&hunter2, van, "hunter 2", EMF, building.evidenceList);
-    // initHunter(&hunter3, van, "hunter 3", EMF, building.evidenceList);
-    // initHunter(&hunter4, van, "hunter 4", EMF, building.evidenceList);
-
-    // GhostType ghost;
-    // initGhost(&ghost, van);
-    //
-    // printf("%d\n",checkHunter(&ghost));
-    // addHunterToBuilding(hunter,&building);
-    //
-    // addHunterToRoom(hunter, van);
-    // addHunterToRoom(&hunter2, van);
-    // addHunterToRoom(&hunter3, van);
-    // addHunterToRoom(&hunter4, van);
-
-    //printHunter(van->hunters);
-    //printf("%d\n",checkHunter(&ghost));
-    //generateEvidence(&ghost);
-    //generateEvidence(&ghost);
-    //generateEvidence(&ghost);
-    //generateEvidence(&ghost);
-    //printEvidence(ghost.room->evidenceList);*/
-
-    cleanupBuilding(&building);
-    //free(van);
+     initializeEverything(&building);
+    cleanupBuilding(&building);;
     return 0;
 }
 
