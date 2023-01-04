@@ -1,15 +1,8 @@
-Author: Rohan Sreelesh (101179451)
-Description: This program implements a a simulation of ghosts and hunters
+# Ghost vs Hunters
 
-Files:
-	defs.h
-	building.c
-	ghost.c
-	main.c
-	room.c
-	hunter.c
-	evidence.c
-	README.md
+This is a simulation of a ghost hunt in a multi-room environment, where four hunters equipped with devices
+search for three kinds of evidence left behind by a ghost
+
 	
 Compilation Instructions:
 make - to compile
@@ -22,6 +15,3 @@ Alternatively
 
 ./a5 <in.txt >out.txt
 
-
-Operating Instructions:
-Just run it. 
