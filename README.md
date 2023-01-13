@@ -5,8 +5,10 @@ search for three kinds of evidence left behind by a ghost
 
 	
 Compilation Instructions:
+
 make - to compile
-make clean - to clean object files and executable
+
+make clean - to delete object files and executable
 
 Launching instructions:
 ./a5
