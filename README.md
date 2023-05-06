@@ -9,5 +9,5 @@ Ghost vs Hunters is a simulation of a ghost hunt in a multi-room environment, wh
 * Four hunters equipped with devices that can detect different types of evidence
 * Ghost AI that moves between rooms and leaves behind evidence
 * Evidence sharing among hunters to increase the chances of finding all evidence
-* Determination of a winner based on which team collects all three types of evidence first
+* Determination of a winner based if the hunters can collect all the evidence before they get "bored" and leave
 
